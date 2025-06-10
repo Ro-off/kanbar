@@ -22,9 +22,9 @@ export default function IndexPage() {
         <h1 className="text-3xl font-bold">Kanban Board</h1>
       </section>
       <section className="flex flex-row  justify-center gap-4 py-8 px-4 md:py-10  h-full overflow-x-auto">
-        <TaskRow title="To Do" headerColor="bg-cyan-100" taskList={taskList} />
-        <TaskRow title="In Progress" headerColor="bg-yellow-100" />
-        <TaskRow title="Done" headerColor="bg-green-100" />
+        <TaskRow headerColor="bg-cyan-100" taskList={taskList} title="To Do" />
+        <TaskRow headerColor="bg-yellow-100" title="In Progress" />
+        <TaskRow headerColor="bg-green-100" title="Done" />
       </section>
       {/* // </DefaultLayout> */}
     </div>

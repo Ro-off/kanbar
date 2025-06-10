@@ -1,9 +1,10 @@
 import { Card, CardHeader, CardBody } from "@heroui/card";
 import { Divider } from "@heroui/divider";
-import { TaskCard } from "./taskCard";
 import { Button } from "@heroui/button";
-import { PlusIcon } from "./icons";
 import { ScrollShadow } from "@heroui/scroll-shadow";
+
+import { TaskCard } from "./taskCard";
+import { PlusIcon } from "./icons";
 
 export function TaskRow({
   title,
@@ -21,11 +22,11 @@ export function TaskRow({
       >
         <h2 className="text-lg font-semibold">{title}</h2>
         <Button
-          className="mt-2"
-          variant="light"
-          color="default"
           isIconOnly
+          className="mt-2"
+          color="default"
           radius="full"
+          variant="light"
         >
           <PlusIcon className="h-5 w-5" />
           <span className="sr-only">Add Task</span>
