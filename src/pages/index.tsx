@@ -1,60 +1,32 @@
-import { Link } from "@heroui/link";
-import { Snippet } from "@heroui/snippet";
-import { Code } from "@heroui/code";
-import { button as buttonStyles } from "@heroui/theme";
+import { TaskRow } from "@/components/taskRow";
+// import DefaultLayout from "@/layouts/default";
 
-import { siteConfig } from "@/config/site";
-import { title, subtitle } from "@/components/primitives";
-import { GithubIcon } from "@/components/icons";
-import DefaultLayout from "@/layouts/default";
+const taskList = [
+  { description: "Task 1: Complete the project documentation." },
+  { description: "Task 2: Implement the user authentication feature." },
+  { description: "Task 3: Fix the bugs reported in the last sprint." },
+  { description: "Task 4: Review the code for the new feature." },
+  { description: "Task 5: Prepare for the upcoming team meeting." },
+  { description: "Task 6: Update the project roadmap." },
+  { description: "Task 7: Conduct a performance review of the application." },
+  { description: "Task 8: Refactor the legacy codebase." },
+  { description: "Task 9: Write unit tests for the new components." },
+  { description: "Task 10: Deploy the latest version to production." },
+];
 
 export default function IndexPage() {
   return (
-    <DefaultLayout>
-      <section className="flex flex-col items-center justify-center gap-4 py-8 md:py-10">
-        <div className="inline-block max-w-lg text-center justify-center">
-          <span className={title()}>Make&nbsp;</span>
-          <span className={title({ color: "violet" })}>beautiful&nbsp;</span>
-          <br />
-          <span className={title()}>
-            websites regardless of your design experience.
-          </span>
-          <div className={subtitle({ class: "mt-4" })}>
-            Beautiful, fast and modern React UI library.
-          </div>
-        </div>
-
-        <div className="flex gap-3">
-          <Link
-            isExternal
-            className={buttonStyles({
-              color: "primary",
-              radius: "full",
-              variant: "shadow",
-            })}
-            href={siteConfig.links.docs}
-          >
-            Documentation
-          </Link>
-          <Link
-            isExternal
-            className={buttonStyles({ variant: "bordered", radius: "full" })}
-            href={siteConfig.links.github}
-          >
-            <GithubIcon size={20} />
-            GitHub
-          </Link>
-        </div>
-
-        <div className="mt-8">
-          <Snippet hideCopyButton hideSymbol variant="bordered">
-            <span>
-              Get started by editing{" "}
-              <Code color="primary">pages/index.tsx</Code>
-            </span>
-          </Snippet>
-        </div>
+    // <DefaultLayout>
+    <div className="h-screen flex flex-col">
+      <section className="flex flex-col items-center justify-center py-8 px-4 md:py-10">
+        <h1 className="text-3xl font-bold">Kanban Board</h1>
       </section>
-    </DefaultLayout>
+      <section className="flex flex-row  justify-center gap-4 py-8 px-4 md:py-10  h-full overflow-x-auto">
+        <TaskRow title="To Do" headerColor="bg-cyan-100" taskList={taskList} />
+        <TaskRow title="In Progress" headerColor="bg-yellow-100" />
+        <TaskRow title="Done" headerColor="bg-green-100" />
+      </section>
+      {/* // </DefaultLayout> */}
+    </div>
   );
 }
