@@ -6,7 +6,9 @@
     "module": "ESNext",
     "skipLibCheck": true,
     "paths": {
-      "@/*": ["./src/*"]
+      "@/*": ["./src/*"],
+      "@components": ["./src/components/index.ts"],
+      "@pages": ["./src/pages/index.ts"]
     },
 
     /* Bundler mode */
