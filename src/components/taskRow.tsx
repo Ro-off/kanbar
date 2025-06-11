@@ -7,6 +7,10 @@ import { useState } from "react";
 import { TaskCard, TaskCardProps } from "./taskCard";
 import { PlusIcon } from "./icons";
 
+type withDate = {
+  date: Date;
+};
+
 export function TaskRow({
   title,
   headerColor,
@@ -16,7 +20,7 @@ export function TaskRow({
   headerColor?: string;
   // taskList?: any[];
 }) {
-  const [taskList, setTaskList] = useState<TaskCardProps[]>([
+  const [taskList, setTaskList] = useState<(withDate & TaskCardProps)[]>([
     { description: "Task 1", newField: false, date: new Date() },
     { description: "Task 2", newField: false, date: new Date() },
     { description: "Task 3", newField: false, date: new Date() },
@@ -53,7 +57,6 @@ export function TaskRow({
             taskList.map((task) => (
               <TaskCard
                 key={task.description + task.date.toISOString()}
-                date={task.date}
                 description={task.description}
                 newField={task.newField}
               />

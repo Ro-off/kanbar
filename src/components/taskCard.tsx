@@ -3,9 +3,28 @@ import { Textarea } from "@heroui/input";
 import { useState } from "react";
 import { Button } from "@heroui/button";
 
-export function TaskCard({ description, newField, date }: TaskCardProps) {
+export function TaskCard({ description, newField }: TaskCardProps) {
   const [value, setValue] = useState(description || "");
   const [isEditing, setIsEditing] = useState(!!newField);
+  const [isInvalid, setIsInvalid] = useState(false);
+
+  const onSubmit = () => {
+    if (value.length < 1) {
+      setIsInvalid(true);
+
+      return;
+    } else {
+      setIsInvalid(false);
+      setIsEditing(!isEditing);
+    }
+  };
+
+  const onValueChange = (newValue: string) => {
+    setValue(newValue);
+    if (newValue.length > 0) {
+      setIsInvalid(false);
+    }
+  };
 
   return (
     <Card className="mx-4 my-2">
@@ -17,23 +36,30 @@ export function TaskCard({ description, newField, date }: TaskCardProps) {
               : undefined
           }
           isDisabled={!isEditing}
+          isInvalid={isInvalid}
           minRows={1}
           size="sm"
+          validate={(value) => {
+            if (value.length < 1) {
+              setIsInvalid(true);
+
+              return "Task description cannot be empty.";
+            }
+
+            return true;
+          }}
           value={value}
           variant="flat"
-          onValueChange={setValue}
+          onValueChange={onValueChange}
         />
       </CardBody>
-      <CardFooter className="flex justify-between items-center">
-        <span className="text-xs text-gray-500">
-          {date ? date.toLocaleTimeString() : "No date set"}
-        </span>
+      <CardFooter className="flex justify-end">
         <Button
           className="btn btn-primary"
           size="sm"
           variant="flat"
           onPressEnd={() => {
-            setIsEditing(!isEditing);
+            onSubmit();
           }}
         >
           {isEditing ? "Save" : "Edit"}
@@ -46,5 +72,4 @@ export function TaskCard({ description, newField, date }: TaskCardProps) {
 export type TaskCardProps = {
   description?: string;
   newField?: boolean;
-  date: Date;
 };
