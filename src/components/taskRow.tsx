@@ -2,19 +2,25 @@ import { Card, CardHeader, CardBody } from "@heroui/card";
 import { Divider } from "@heroui/divider";
 import { Button } from "@heroui/button";
 import { ScrollShadow } from "@heroui/scroll-shadow";
+import { useState } from "react";
 
-import { TaskCard } from "./taskCard";
+import { TaskCard, TaskCardProps } from "./taskCard";
 import { PlusIcon } from "./icons";
 
 export function TaskRow({
   title,
   headerColor,
-  taskList,
+  // taskList,
 }: {
   title: string;
   headerColor?: string;
-  taskList?: any[];
+  // taskList?: any[];
 }) {
+  const [taskList, setTaskList] = useState<TaskCardProps[]>([
+    { description: "Task 1", newField: false },
+    { description: "Task 2", newField: false },
+  ]);
+
   return (
     <Card className="variant w-72 h-full ">
       <CardHeader
@@ -27,6 +33,9 @@ export function TaskRow({
           color="default"
           radius="full"
           variant="light"
+          onPress={() => {
+            setTaskList([{ description: "", newField: true }, ...taskList]);
+          }}
         >
           <PlusIcon className="h-5 w-5" />
           <span className="sr-only">Add Task</span>
@@ -37,8 +46,12 @@ export function TaskRow({
       <CardBody className="p-0 ">
         <ScrollShadow className="h-full ">
           {taskList && taskList.length > 0 ? (
-            taskList.map((task, index) => (
-              <TaskCard key={index} description={task.description} />
+            taskList.map((task) => (
+              <TaskCard
+                key={task.description}
+                description={task.description}
+                newField={task.newField}
+              />
             ))
           ) : (
             <p className="text-gray-500 text-center m-4">No tasks available.</p>
