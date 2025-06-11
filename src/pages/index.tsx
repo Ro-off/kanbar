@@ -1,6 +1,6 @@
-import { TaskRow } from "@/components/taskRow";
-// import DefaultLayout from "@/layouts/default";
+import { ScrollShadow } from "@heroui/scroll-shadow";
 
+import { TaskRow } from "@/components/taskRow";
 const taskList = [
   { description: "Task 1: Complete the project documentation." },
   { description: "Task 2: Implement the user authentication feature." },
@@ -14,19 +14,19 @@ const taskList = [
   { description: "Task 10: Deploy the latest version to production." },
 ];
 
-export default function IndexPage() {
-  return (
-    // <DefaultLayout>
-    <div className="h-screen flex flex-col">
-      <section className="flex flex-col items-center justify-center py-8 px-4 md:py-10">
-        <h1 className="text-3xl font-bold">Kanban Board</h1>
-      </section>
-      <section className="flex flex-row  justify-center gap-4 py-8 px-4 md:py-10  h-full overflow-x-auto">
+const IndexPage = () => (
+  <div className="h-screen flex flex-col ">
+    <section className="flex flex-col items-center justify-center py-8 px-4 md:py-10">
+      <h1 className="text-3xl font-bold text-center">Kanban Board</h1>
+    </section>
+    <ScrollShadow className="max-w-screen" orientation="horizontal">
+      <section className="flex flex-row  justify-center gap-4 py-8 px-4 md:py-10 h-full w-max py-auto mx-auto">
         <TaskRow headerColor="bg-cyan-100" taskList={taskList} title="To Do" />
         <TaskRow headerColor="bg-yellow-100" title="In Progress" />
         <TaskRow headerColor="bg-green-100" title="Done" />
       </section>
-      {/* // </DefaultLayout> */}
-    </div>
-  );
-}
+    </ScrollShadow>
+  </div>
+);
+
+export default IndexPage;
