@@ -17,8 +17,9 @@ export function TaskRow({
   // taskList?: any[];
 }) {
   const [taskList, setTaskList] = useState<TaskCardProps[]>([
-    { description: "Task 1", newField: false },
-    { description: "Task 2", newField: false },
+    { description: "Task 1", newField: false, date: new Date() },
+    { description: "Task 2", newField: false, date: new Date() },
+    { description: "Task 3", newField: false, date: new Date() },
   ]);
 
   return (
@@ -34,7 +35,10 @@ export function TaskRow({
           radius="full"
           variant="light"
           onPress={() => {
-            setTaskList([{ description: "", newField: true }, ...taskList]);
+            setTaskList([
+              { description: "", newField: true, date: new Date() },
+              ...taskList,
+            ]);
           }}
         >
           <PlusIcon className="h-5 w-5" />
@@ -48,7 +52,8 @@ export function TaskRow({
           {taskList && taskList.length > 0 ? (
             taskList.map((task) => (
               <TaskCard
-                key={task.description}
+                key={task.description + task.date.toISOString()}
+                date={task.date}
                 description={task.description}
                 newField={task.newField}
               />
