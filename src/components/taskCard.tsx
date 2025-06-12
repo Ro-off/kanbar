@@ -3,18 +3,31 @@ import { Textarea } from "@heroui/input";
 import { useState } from "react";
 import { Button } from "@heroui/button";
 
-export function TaskCard({ description, newField }: TaskCardProps) {
+import { TaskCardProps } from "../types";
+import { deleteTask, updateTask } from "../actions/tasksActions";
+
+export function TaskCard({
+  id,
+  columnId,
+  description,
+  newField = false,
+}: TaskCardProps) {
   const [value, setValue] = useState(description || "");
   const [isEditing, setIsEditing] = useState(!!newField);
   const [isInvalid, setIsInvalid] = useState(false);
 
-  const onSubmit = () => {
+  const handleSubmit = () => {
     if (value.length < 1) {
       setIsInvalid(true);
 
       return;
     } else {
       setIsInvalid(false);
+      updateTask(id, {
+        description: value,
+        newField: true,
+        columnId,
+      });
       setIsEditing(!isEditing);
     }
   };
@@ -53,14 +66,22 @@ export function TaskCard({ description, newField }: TaskCardProps) {
           onValueChange={onValueChange}
         />
       </CardBody>
-      <CardFooter className="flex justify-end">
+      <CardFooter className="flex justify-between">
+        <Button
+          className="btn btn-secondary"
+          size="sm"
+          variant="flat"
+          onPressEnd={() => {
+            deleteTask(id);
+          }}
+        >
+          Delete
+        </Button>
         <Button
           className="btn btn-primary"
           size="sm"
           variant="flat"
-          onPressEnd={() => {
-            onSubmit();
-          }}
+          onPressEnd={handleSubmit}
         >
           {isEditing ? "Save" : "Edit"}
         </Button>
@@ -68,8 +89,3 @@ export function TaskCard({ description, newField }: TaskCardProps) {
     </Card>
   );
 }
-
-export type TaskCardProps = {
-  description?: string;
-  newField?: boolean;
-};
