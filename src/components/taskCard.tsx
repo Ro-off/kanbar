@@ -2,6 +2,8 @@ import { Card, CardFooter, CardBody } from "@heroui/card";
 import { Textarea } from "@heroui/input";
 import { useState } from "react";
 import { Button } from "@heroui/button";
+import { useDraggable } from "@dnd-kit/core";
+import { CSS } from "@dnd-kit/utilities";
 
 import { TaskCardProps } from "../types";
 import { deleteTask, updateTask } from "../actions/tasksActions";
@@ -39,53 +41,73 @@ export function TaskCard({
     }
   };
 
+  const { attributes, listeners, setNodeRef, transform } = useDraggable({
+    id: id,
+    data: {
+      test: "yes",
+    },
+  });
+
+  const style = {
+    transform: CSS.Translate.toString(transform),
+    ...(transform ? { zIndex: 2000 } : {}),
+  };
+
   return (
-    <Card className="mx-4 my-2">
-      <CardBody>
-        <Textarea
-          classNames={
-            !isEditing
-              ? { inputWrapper: "bg-transparent shadow-none" }
-              : undefined
-          }
-          isDisabled={!isEditing}
-          isInvalid={isInvalid}
-          minRows={1}
-          size="sm"
-          validate={(value) => {
-            if (value.length < 1) {
-              setIsInvalid(true);
-
-              return "Task description cannot be empty.";
+    <div
+      ref={setNodeRef}
+      style={style}
+      {...listeners}
+      {...attributes}
+      className=" relative z-50"
+    >
+      <Card className="mx-4 my-2">
+        <CardBody>
+          <Textarea
+            classNames={
+              !isEditing
+                ? { inputWrapper: "bg-transparent shadow-none" }
+                : undefined
             }
+            isDisabled={!isEditing}
+            isInvalid={isInvalid}
+            minRows={1}
+            size="sm"
+            validate={(value) => {
+              if (value.length < 1) {
+                setIsInvalid(true);
 
-            return true;
-          }}
-          value={value}
-          variant="flat"
-          onValueChange={onValueChange}
-        />
-      </CardBody>
-      <CardFooter className="flex justify-between">
-        <Button
-          className="btn btn-secondary"
-          size="sm"
-          variant="flat"
-          onPressEnd={() => {
-            deleteTask(id);
-          }}
-        >
-          Delete
-        </Button>
-        <Button
-          className="btn btn-primary"
-          size="sm"
-          variant="flat"
-          onPressEnd={handleSubmit}
-        >
-          {isEditing ? "Save" : "Edit"}
-        </Button>
-      </CardFooter>
-    </Card>
+                return "Task description cannot be empty.";
+              }
+
+              return true;
+            }}
+            value={value}
+            variant="flat"
+            onValueChange={onValueChange}
+          />
+        </CardBody>
+        <CardFooter className="flex justify-between">
+          <Button
+            className="btn btn-secondary"
+            size="sm"
+            variant="flat"
+            onPressEnd={() => {
+              deleteTask(id);
+            }}
+          >
+            Delete
+          </Button>
+          <Button
+            className="btn btn-primary"
+            size="sm"
+            variant="flat"
+            onPressEnd={handleSubmit}
+          >
+            {isEditing ? "Save" : "Edit"}
+          </Button>
+        </CardFooter>
+      </Card>
+    </div>
   );
 }

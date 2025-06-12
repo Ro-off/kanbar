@@ -3,6 +3,7 @@ import { Divider } from "@heroui/divider";
 import { Button } from "@heroui/button";
 import { ScrollShadow } from "@heroui/scroll-shadow";
 import { useSelector } from "react-redux";
+import { useDroppable } from "@dnd-kit/core";
 
 import { createTask } from "../actions/tasksActions";
 
@@ -45,8 +46,12 @@ export function TaskRow({ columnId }: { columnId: ColumnIds }) {
     state.tasks.filter((task: withId) => task.columnId === columnId),
   );
 
+  const { setNodeRef } = useDroppable({
+    id: columnId,
+  });
+
   return (
-    <Card className="variant w-72 h-full ">
+    <Card className="variant w-72 h-full overflow-visible">
       <CardHeader
         className={`flex flex-row justify-between opacity-80 ${headerColor} p-4 rounded-t-lg`}
       >
@@ -67,21 +72,29 @@ export function TaskRow({ columnId }: { columnId: ColumnIds }) {
       </CardHeader>
       <Divider />
 
-      <CardBody className="p-0 ">
-        <ScrollShadow className="h-full ">
-          {taskList && taskList.length > 0 ? (
-            taskList.map((task) => (
-              <TaskCard
-                key={task.id}
-                columnId={task.columnId}
-                description={task.description}
-                id={task.id}
-                newField={task.newField}
-              />
-            ))
-          ) : (
-            <p className="text-gray-500 text-center m-4">No tasks available.</p>
-          )}
+      <CardBody className="p-0 w-full overflow-y-visible">
+        <ScrollShadow
+          ref={setNodeRef}
+          className="h-full overflow-y-visible"
+          orientation="vertical"
+        >
+          <div ref={setNodeRef} className="w-full">
+            {taskList && taskList.length > 0 ? (
+              taskList.map((task) => (
+                <TaskCard
+                  key={task.id}
+                  columnId={task.columnId}
+                  description={task.description}
+                  id={task.id}
+                  newField={task.newField}
+                />
+              ))
+            ) : (
+              <p className="text-gray-500 text-center m-4">
+                No tasks available.
+              </p>
+            )}
+          </div>
         </ScrollShadow>
       </CardBody>
     </Card>
