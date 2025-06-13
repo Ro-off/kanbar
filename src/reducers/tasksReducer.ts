@@ -40,16 +40,52 @@ export const tasksReducer = (
         tasks: state.tasks.filter((task) => task.id !== action.payload),
       };
 
+    // case actions.UPDATE_TASK:
+    //   return {
+    //     ...state,
+    //     tasks: state.tasks.map((task) =>
+    //       typeof action.payload === "object" &&
+    //       "id" in action.payload &&
+    //       task.id === action.payload.id
+    //         ? {
+    //             ...task,
+    //             newField: false,
+    //             ...(action.payload.data as UpdateTaskAction["payload"]),
+    //           }
+    //         : task,
+    //     ),
+    //   };
+
     case actions.UPDATE_TASK:
+      let taskArray = [...state.tasks];
+      const payload = action.payload as UpdateTaskAction["payload"];
+      const oldTask = taskArray.find((task) => task.id === payload.id);
+
+      if (!oldTask) {
+        return state;
+      }
+      const newTask = { ...oldTask, ...payload, newField: false };
+
+      const oldIndex = taskArray.indexOf(oldTask);
+      const newIndex = payload.index !== undefined ? payload.index : oldIndex;
+
+      taskArray.splice(oldIndex, 1);
+
+      console.log("UPDATE_TASK action:", {
+        payload,
+        oldTask,
+        newTask,
+        oldIndex,
+        newIndex,
+        tasksBefore: state,
+        taskArrayAfter: taskArray,
+      });
+
       return {
-        ...state,
-        tasks: state.tasks.map((task) =>
-          typeof action.payload === "object" &&
-          "id" in action.payload &&
-          task.id === action.payload.id
-            ? { ...task, ...(action.payload as UpdateTaskAction["payload"]) }
-            : task,
-        ),
+        tasks: taskArray
+          .slice(0, newIndex)
+          .concat([newTask])
+          .concat(state.tasks.slice(newIndex + 1, state.tasks.length)),
       };
 
     default:

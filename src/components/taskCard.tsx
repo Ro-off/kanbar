@@ -13,6 +13,7 @@ export function TaskCard({
   columnId,
   description,
   newField = false,
+  index,
 }: TaskCardProps) {
   const [value, setValue] = useState(description || "");
   const [isEditing, setIsEditing] = useState(!!newField);
@@ -46,11 +47,17 @@ export function TaskCard({
     data: {
       test: "yes",
     },
+    disabled: isEditing,
+    attributes: {
+      tabIndex: index,
+    },
   });
 
-  const style = {
+  const style: React.CSSProperties = {
     transform: CSS.Translate.toString(transform),
-    ...(transform ? { zIndex: 2000 } : {}),
+    ...(transform
+      ? { visibility: "hidden" as React.CSSProperties["visibility"] }
+      : {}),
   };
 
   return (

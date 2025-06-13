@@ -51,7 +51,7 @@ export function TaskRow({ columnId }: { columnId: ColumnIds }) {
   });
 
   return (
-    <Card className="variant w-72 h-full overflow-visible">
+    <Card className="variant w-72 h-full ">
       <CardHeader
         className={`flex flex-row justify-between opacity-80 ${headerColor} p-4 rounded-t-lg`}
       >
@@ -72,20 +72,21 @@ export function TaskRow({ columnId }: { columnId: ColumnIds }) {
       </CardHeader>
       <Divider />
 
-      <CardBody className="p-0 w-full overflow-y-visible">
+      <CardBody className="p-0 w-full ">
         <ScrollShadow
           ref={setNodeRef}
-          className="h-full overflow-y-visible"
+          className="h-full"
           orientation="vertical"
         >
           <div ref={setNodeRef} className="w-full">
             {taskList && taskList.length > 0 ? (
-              taskList.map((task) => (
+              taskList.map((task, index) => (
                 <TaskCard
                   key={task.id}
                   columnId={task.columnId}
                   description={task.description}
                   id={task.id}
+                  index={index}
                   newField={task.newField}
                 />
               ))

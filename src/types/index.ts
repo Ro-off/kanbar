@@ -29,15 +29,18 @@ export interface UpdateTaskAction {
   type: "UPDATE_TASK";
   payload: {
     id: string;
-  } & Partial<Task>;
+    data: Partial<Task>;
+    index?: number;
+  };
 }
 
 export type TaskAction = AddTaskAction | RemoveTaskAction | UpdateTaskAction;
 
 export type TasksState = {
-  tasks: Task[] | [];
+  tasks: Task[];
 };
 
 export interface TaskCardProps extends Task {
   isEditing?: boolean;
+  index: number;
 }
