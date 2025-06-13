@@ -8,13 +8,13 @@ import { CSS } from "@dnd-kit/utilities";
 import { TaskCardProps } from "../types";
 import { deleteTask, updateTask } from "../actions/tasksActions";
 
-export function TaskCard({
+export const TaskCard = ({
   id,
   columnId,
   description,
   newField = false,
   index,
-}: TaskCardProps) {
+}: TaskCardProps) => {
   const [value, setValue] = useState(description || "");
   const [isEditing, setIsEditing] = useState(!!newField);
   const [isInvalid, setIsInvalid] = useState(false);
@@ -123,4 +123,4 @@ export function TaskCard({
       </Card>
     </div>
   );
-}
+};

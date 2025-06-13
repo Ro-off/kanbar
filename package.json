@@ -1,6 +1,7 @@
 {
   "name": "vite-template",
-  "private": true,
+  "private": false,
+  "homepage": "https://ro-off.github.io/kanbar/",
   "version": "0.0.0",
   "type": "module",
   "scripts": {

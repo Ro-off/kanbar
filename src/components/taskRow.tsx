@@ -2,14 +2,13 @@ import { Card, CardHeader, CardBody } from "@heroui/card";
 import { Divider } from "@heroui/divider";
 import { Button } from "@heroui/button";
 import { ScrollShadow } from "@heroui/scroll-shadow";
+import { TaskCard } from "@components";
+import { PlusIcon } from "@components";
 import { useSelector } from "react-redux";
 import { useDroppable } from "@dnd-kit/core";
 import { SortableContext } from "@dnd-kit/sortable";
 
 import { createTask } from "../actions/tasksActions";
-
-import { TaskCard } from "./taskCard";
-import { PlusIcon } from "./icons";
 
 import { TasksState } from "@/types";
 
@@ -37,7 +36,7 @@ export const variants = {
 
 export type ColumnIds = keyof typeof variants;
 
-export function TaskRow({ columnId }: { columnId: ColumnIds }) {
+export const TaskRow = ({ columnId }: { columnId: ColumnIds }) => {
   const { title, headerColor } = variants[columnId] || {
     title: "Invalid column Id",
     headerColor: "bg-danger-500",
@@ -52,7 +51,7 @@ export function TaskRow({ columnId }: { columnId: ColumnIds }) {
   });
 
   return (
-    <Card className="variant w-72 h-full ">
+    <Card disableRipple className="xl:w-96 w-72 h-full ">
       <CardHeader
         className={`flex flex-row justify-between opacity-80 ${headerColor} p-4 rounded-t-lg`}
       >
@@ -72,7 +71,6 @@ export function TaskRow({ columnId }: { columnId: ColumnIds }) {
         </Button>
       </CardHeader>
       <Divider />
-
       <CardBody className="p-0 w-full ">
         <ScrollShadow
           ref={setNodeRef}
@@ -103,4 +101,4 @@ export function TaskRow({ columnId }: { columnId: ColumnIds }) {
       </CardBody>
     </Card>
   );
-}
+};
