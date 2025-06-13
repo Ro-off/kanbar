@@ -2,7 +2,7 @@ import { Card, CardFooter, CardBody } from "@heroui/card";
 import { Textarea } from "@heroui/input";
 import { useState } from "react";
 import { Button } from "@heroui/button";
-import { useDraggable } from "@dnd-kit/core";
+import { useSortable } from "@dnd-kit/sortable";
 import { CSS } from "@dnd-kit/utilities";
 
 import { TaskCardProps } from "../types";
@@ -42,17 +42,26 @@ export function TaskCard({
     }
   };
 
-  const { attributes, listeners, setNodeRef, transform } = useDraggable({
+  const {
+    attributes,
+    listeners,
+    setNodeRef,
+    transform,
+    transition,
+    isDragging,
+  } = useSortable({
     id: id,
     data: {
-      index: index,
+      index,
+      oldColumnId: columnId,
     },
     disabled: isEditing,
   });
 
   const style: React.CSSProperties = {
-    transform: CSS.Translate.toString(transform),
-    ...(transform
+    transform: CSS.Transform.toString(transform),
+    transition,
+    ...(isDragging
       ? { visibility: "hidden" as React.CSSProperties["visibility"] }
       : {}),
   };
@@ -61,8 +70,8 @@ export function TaskCard({
     <div
       ref={setNodeRef}
       style={style}
-      {...listeners}
       {...attributes}
+      {...listeners}
       className=" relative z-50"
     >
       <Card className="mx-4 my-2">

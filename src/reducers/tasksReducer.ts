@@ -71,22 +71,12 @@ export const tasksReducer = (
 
       taskArray.splice(oldIndex, 1);
 
-      console.log("UPDATE_TASK action:", {
-        payload,
-        oldTask,
-        newTask,
-        oldIndex,
-        newIndex,
-        tasksBefore: state,
-        taskArrayAfter: taskArray,
-      });
-
       return {
         ...state,
         tasks: [
-          ...taskArray.slice(0, newIndex + 1),
+          ...taskArray.slice(0, newIndex),
           newTask,
-          ...taskArray.slice(newIndex + 1, taskArray.length),
+          ...taskArray.slice(newIndex, taskArray.length),
         ],
       };
 

@@ -4,6 +4,7 @@ import { Button } from "@heroui/button";
 import { ScrollShadow } from "@heroui/scroll-shadow";
 import { useSelector } from "react-redux";
 import { useDroppable } from "@dnd-kit/core";
+import { SortableContext } from "@dnd-kit/sortable";
 
 import { createTask } from "../actions/tasksActions";
 
@@ -19,7 +20,7 @@ type withId = {
   newField?: boolean;
 };
 
-const variants = {
+export const variants = {
   todo: {
     title: "To Do",
     headerColor: "bg-blue-100",
@@ -78,18 +79,20 @@ export function TaskRow({ columnId }: { columnId: ColumnIds }) {
           className="h-full"
           orientation="vertical"
         >
-          <div ref={setNodeRef} className="w-full overflow-x-hidden">
+          <div className="w-full overflow-x-hidden h-full">
             {taskList && taskList.length > 0 ? (
-              taskList.map((task, index) => (
-                <TaskCard
-                  key={task.id}
-                  columnId={task.columnId}
-                  description={task.description}
-                  id={task.id}
-                  index={index}
-                  newField={task.newField}
-                />
-              ))
+              <SortableContext id={columnId} items={taskList}>
+                {taskList.map((task, index) => (
+                  <TaskCard
+                    key={task.id}
+                    columnId={task.columnId}
+                    description={task.description}
+                    id={task.id}
+                    index={index}
+                    newField={task.newField}
+                  />
+                ))}
+              </SortableContext>
             ) : (
               <p className="text-gray-500 text-center m-4">
                 No tasks available.

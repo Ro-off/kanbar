@@ -2,7 +2,7 @@ import { DndContext, DragEndEvent, DragOverlay } from "@dnd-kit/core";
 import { useState } from "react";
 import { useSelector } from "react-redux";
 
-import { TaskRow, ColumnIds } from "@/components/taskRow";
+import { ColumnIds, TaskRow } from "@/components/taskRow";
 import { updateTask } from "@/actions/tasksActions";
 import { TaskCard } from "@/components/taskCard";
 import { Task, TasksState } from "@/types";
@@ -20,10 +20,15 @@ export default function IndexPage() {
   const handleDragEnd = (event: DragEndEvent) => {
     const { over, active } = event;
 
-    if (over !== null) {
+    if (over && over.data.current?.sortable) {
       updateTask(String(active.id), {
+        columnId: over.data.current.sortable.containerId,
+        index: over.data.current?.index,
+      });
+    } else if (over && over.id) {
+      updateTask(String(active.id), {
+        // index: 0,
         columnId: over.id as ColumnIds,
-        index: active.data.index,
       });
     }
   };

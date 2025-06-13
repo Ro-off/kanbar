@@ -42,5 +42,5 @@ export type TasksState = {
 
 export interface TaskCardProps extends Task {
   isEditing?: boolean;
-  index: number;
+  index?: number;
 }
