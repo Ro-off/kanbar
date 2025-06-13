@@ -23,6 +23,7 @@ export default function IndexPage() {
     if (over !== null) {
       updateTask(String(active.id), {
         columnId: over.id as ColumnIds,
+        index: active.data.index,
       });
     }
   };

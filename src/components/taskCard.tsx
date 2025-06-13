@@ -45,12 +45,9 @@ export function TaskCard({
   const { attributes, listeners, setNodeRef, transform } = useDraggable({
     id: id,
     data: {
-      test: "yes",
+      index: index,
     },
     disabled: isEditing,
-    attributes: {
-      tabIndex: index,
-    },
   });
 
   const style: React.CSSProperties = {

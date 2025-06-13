@@ -78,7 +78,7 @@ export function TaskRow({ columnId }: { columnId: ColumnIds }) {
           className="h-full"
           orientation="vertical"
         >
-          <div ref={setNodeRef} className="w-full">
+          <div ref={setNodeRef} className="w-full overflow-x-hidden">
             {taskList && taskList.length > 0 ? (
               taskList.map((task, index) => (
                 <TaskCard

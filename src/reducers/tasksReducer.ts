@@ -82,10 +82,12 @@ export const tasksReducer = (
       });
 
       return {
-        tasks: taskArray
-          .slice(0, newIndex)
-          .concat([newTask])
-          .concat(state.tasks.slice(newIndex + 1, state.tasks.length)),
+        ...state,
+        tasks: [
+          ...taskArray.slice(0, newIndex + 1),
+          newTask,
+          ...taskArray.slice(newIndex + 1, taskArray.length),
+        ],
       };
 
     default:
