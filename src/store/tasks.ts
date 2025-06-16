@@ -1,4 +1,5 @@
 import { takeEvery } from "redux-saga/effects";
+import { ColumnIds } from "@types";
 
 import {
   AddTaskAction,
@@ -10,8 +11,6 @@ import {
 } from "../types";
 
 import { store } from "./configureStore";
-
-import { ColumnIds } from "@/components/taskRow";
 
 const ADD_TASK = "ADD_TASK";
 const REMOVE_TASK = "REMOVE_TASK";

@@ -7,35 +7,18 @@ import { PlusIcon } from "@components";
 import { useSelector } from "react-redux";
 import { useDroppable } from "@dnd-kit/core";
 import { SortableContext } from "@dnd-kit/sortable";
-import { TasksState } from "@types";
+import { TasksState, TaskRowProps, rowVariants } from "@types";
 import { createTask } from "@store";
 
 type withId = {
   id: string;
-  columnId: keyof typeof variants;
+  columnId: keyof typeof rowVariants;
   description?: string;
   newField?: boolean;
 };
 
-export const variants = {
-  todo: {
-    title: "To Do",
-    headerColor: "bg-blue-100",
-  },
-  inProgress: {
-    title: "In Progress",
-    headerColor: "bg-yellow-100",
-  },
-  done: {
-    title: "Done",
-    headerColor: "bg-green-100",
-  },
-};
-
-export type ColumnIds = keyof typeof variants;
-
-export const TaskRow = ({ columnId }: { columnId: ColumnIds }) => {
-  const { title, headerColor } = variants[columnId] || {
+export const TaskRow = ({ columnId }: TaskRowProps) => {
+  const { title, headerColor } = rowVariants[columnId] || {
     title: "Invalid column Id",
     headerColor: "bg-danger-500",
   };

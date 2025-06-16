@@ -1,6 +1,21 @@
 import { SVGProps } from "react";
 
-import { ColumnIds } from "@/components/taskRow";
+export const rowVariants = {
+  todo: {
+    title: "To Do",
+    headerColor: "bg-blue-100",
+  },
+  inProgress: {
+    title: "In Progress",
+    headerColor: "bg-yellow-100",
+  },
+  done: {
+    title: "Done",
+    headerColor: "bg-green-100",
+  },
+};
+
+export type ColumnIds = keyof typeof rowVariants;
 
 export type IconSvgProps = SVGProps<SVGSVGElement> & {
   size?: number;
@@ -13,6 +28,10 @@ export interface Task {
   columnId: ColumnIds;
 
   [key: string]: any;
+}
+
+export interface TaskRowProps {
+  columnId: ColumnIds;
 }
 
 export interface AddTaskAction {
