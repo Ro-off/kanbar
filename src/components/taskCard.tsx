@@ -4,9 +4,9 @@ import { useState } from "react";
 import { Button } from "@heroui/button";
 import { useSortable } from "@dnd-kit/sortable";
 import { CSS } from "@dnd-kit/utilities";
+import { deleteTask, updateTask } from "@store";
 
 import { TaskCardProps } from "../types";
-import { deleteTask, updateTask } from "../actions/tasksActions";
 
 export const TaskCard = ({
   id,

@@ -4,7 +4,7 @@ import { HeroUIProvider } from "@heroui/system";
 import { useHref, useNavigate } from "react-router-dom";
 import { Provider as ReactReduxProvider } from "react-redux";
 
-import { store } from "./store";
+import { store } from "./store/configureStore";
 
 declare module "@react-types/shared" {
   interface RouterConfig {

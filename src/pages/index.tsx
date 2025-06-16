@@ -4,7 +4,7 @@ import { useSelector } from "react-redux";
 import { ScrollShadow } from "@heroui/scroll-shadow";
 
 import { ColumnIds, TaskRow } from "@/components/taskRow";
-import { updateTask } from "@/actions/tasksActions";
+import { updateTask } from "@/store/tasks";
 import { TaskCard } from "@/components/taskCard";
 import { Task, TasksState } from "@/types";
 

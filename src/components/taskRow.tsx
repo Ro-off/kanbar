@@ -7,10 +7,8 @@ import { PlusIcon } from "@components";
 import { useSelector } from "react-redux";
 import { useDroppable } from "@dnd-kit/core";
 import { SortableContext } from "@dnd-kit/sortable";
-
-import { createTask } from "../actions/tasksActions";
-
-import { TasksState } from "@/types";
+import { TasksState } from "@types";
+import { createTask } from "@store";
 
 type withId = {
   id: string;
