@@ -1,16 +1,8 @@
 import path from "node:path";
-import {
-  fileURLToPath
-} from "node:url";
+import { fileURLToPath } from "node:url";
 
-import {
-  defineConfig,
-  globalIgnores
-} from "eslint/config";
-import {
-  fixupConfigRules,
-  fixupPluginRules
-} from "@eslint/compat";
+import { defineConfig, globalIgnores } from "eslint/config";
+import { fixupConfigRules, fixupPluginRules } from "@eslint/compat";
 import react from "eslint-plugin-react";
 import unusedImports from "eslint-plugin-unused-imports";
 import _import from "eslint-plugin-import";
@@ -20,12 +12,9 @@ import prettier from "eslint-plugin-prettier";
 import globals from "globals";
 import tsParser from "@typescript-eslint/parser";
 import js from "@eslint/js";
-import {
-  FlatCompat
-} from "@eslint/eslintrc";
+import { FlatCompat } from "@eslint/eslintrc";
 
-const __filename = fileURLToPath(
-  import.meta.url);
+const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
 const compat = new FlatCompat({
   baseDirectory: __dirname,
@@ -56,6 +45,7 @@ export default defineConfig([
     "!**/react-shim.js",
     "!**/tsup.config.ts",
   ]),
+
   {
     extends: fixupConfigRules(
       compat.extends(
@@ -100,7 +90,6 @@ export default defineConfig([
       },
     },
 
-
     files: ["**/*.ts", "**/*.tsx"],
 
     rules: {
@@ -111,7 +100,12 @@ export default defineConfig([
       "react-hooks/exhaustive-deps": "off",
       "jsx-a11y/click-events-have-key-events": "warn",
       "jsx-a11y/interactive-supports-focus": "warn",
-      "prettier/prettier": "warn",
+      "prettier/prettier": [
+        "warn",
+        {
+          endOfLine: "auto",
+        },
+      ],
       "no-unused-vars": "off",
       "unused-imports/no-unused-vars": "off",
       "unused-imports/no-unused-imports": "warn",
@@ -139,11 +133,13 @@ export default defineConfig([
             "index",
           ],
 
-          pathGroups: [{
-            pattern: "~/**",
-            group: "external",
-            position: "after",
-          }, ],
+          pathGroups: [
+            {
+              pattern: "~/**",
+              group: "external",
+              position: "after",
+            },
+          ],
 
           "newlines-between": "always",
         },
@@ -177,7 +173,7 @@ export default defineConfig([
           blankLine: "any",
           prev: ["const", "let", "var"],
           next: ["const", "let", "var"],
-        }
+        },
       ],
     },
   },
