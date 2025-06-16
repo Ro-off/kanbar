@@ -5,8 +5,10 @@ import {
   UpdateTaskAction,
 } from "../types/";
 
-const initialState: TasksState = {
-  tasks: [],
+import { getTasksAsync } from "@/actions/asyncTasksActions";
+
+let initialState: TasksState = {
+  tasks: (await getTasksAsync()) ?? [],
 };
 
 const actions = {
@@ -39,22 +41,6 @@ export const tasksReducer = (
         ...state,
         tasks: state.tasks.filter((task) => task.id !== action.payload),
       };
-
-    // case actions.UPDATE_TASK:
-    //   return {
-    //     ...state,
-    //     tasks: state.tasks.map((task) =>
-    //       typeof action.payload === "object" &&
-    //       "id" in action.payload &&
-    //       task.id === action.payload.id
-    //         ? {
-    //             ...task,
-    //             newField: false,
-    //             ...(action.payload.data as UpdateTaskAction["payload"]),
-    //           }
-    //         : task,
-    //     ),
-    //   };
 
     case actions.UPDATE_TASK:
       let taskArray = [...state.tasks];

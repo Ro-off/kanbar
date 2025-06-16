@@ -31,6 +31,8 @@ export interface UpdateTaskAction {
     id: string;
     data: Partial<Task>;
     index?: number;
+    newField: boolean;
+    columnId: ColumnIds;
   };
 }
 

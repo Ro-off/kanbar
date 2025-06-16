@@ -28,7 +28,6 @@ const IndexPage = () => {
       });
     } else if (over && over.id) {
       updateTask(String(active.id), {
-        // index: 0,
         columnId: over.id as ColumnIds,
       });
     }

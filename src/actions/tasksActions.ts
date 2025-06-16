@@ -8,7 +8,6 @@ export const updateTask = (id: string, updatedFields: Partial<Task>) => {
     type: "UPDATE_TASK",
     payload: {
       id,
-      //   data: updatedFields,
       ...updatedFields,
     },
   });
