@@ -3,10 +3,11 @@ import { useState } from "react";
 import { useSelector } from "react-redux";
 import { ScrollShadow } from "@heroui/scroll-shadow";
 
-import { ColumnIds } from "@/components/taskRow";
+import { ColumnIds } from "@/types";
 import { updateTask } from "@/store/tasks";
 import { TaskCard } from "@/components/taskCard";
 import { Task, TasksState } from "@/types";
+import { TaskRow } from "@/components";
 
 const IndexPage = () => {
   const [activeId, setActiveId] = useState<string | null>(null);
