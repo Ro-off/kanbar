@@ -1,15 +1,38 @@
 import { expect, test } from "vitest";
-import { store } from "@store";
+import {
+  store,
+  createTask,
+  deleteTask,
+  updateTask,
+  updateTaskOnBack,
+  getTasksOnBack,
+  removeTaskOnBack,
+} from "@store";
 
-import { createTask, deleteTask, updateTask } from "../tasks";
-
-import { Task } from "@/types";
+import { RemoveTaskAction, Task, UpdateTaskAction } from "@/types";
 
 const testTask: Task = {
   id: "1234-1234-1234-1234",
   columnId: "todo",
   description: "Test task description",
   newField: false,
+};
+
+const updateTaskAction: UpdateTaskAction = {
+  type: "UPDATE_TASK",
+  payload: {
+    id: testTask.id,
+    columnId: testTask.columnId,
+    newField: false,
+    data: {
+      description: testTask.description,
+    },
+  },
+};
+
+const removeTaskAction: RemoveTaskAction = {
+  type: "REMOVE_TASK",
+  payload: testTask.id,
 };
 
 const getTasksFromReduxStore = () => {
@@ -22,12 +45,21 @@ const cleanUpReduxStore = (taskId: string) => {
   deleteTask(taskId);
 };
 
+const createTaskOnBack = async (action: UpdateTaskAction) => {
+  await updateTaskOnBack(action);
+};
+
+const cleanUpOnBack = () => {
+  localStorage.clear();
+};
+
 test("Check ability to create task in Redux store", () => {
   createTask(testTask.columnId);
   const tasksInStore = getTasksFromReduxStore();
 
   expect(tasksInStore.length).toBe(1);
   cleanUpReduxStore(tasksInStore[0].id);
+  cleanUpOnBack();
 });
 
 test("Check ability to delete task in Redux store", () => {
@@ -35,6 +67,8 @@ test("Check ability to delete task in Redux store", () => {
   const tasksInStoreBeforeCleanUp = getTasksFromReduxStore();
 
   cleanUpReduxStore(tasksInStoreBeforeCleanUp[0].id);
+  cleanUpOnBack();
+
   const tasksInStoreAfterCleanUp = getTasksFromReduxStore();
 
   expect(
@@ -52,5 +86,62 @@ test("Check ability to update task in Redux store", () => {
 
   const taskAfterEdit = getTasksFromReduxStore()[0];
 
+  cleanUpOnBack();
+
   expect(taskAfterEdit.description).toBe(testTask.description);
+});
+
+test("Check ability to create task in LocalStorage", async () => {
+  await createTaskOnBack(updateTaskAction);
+  const tasksString = localStorage.getItem("tasks");
+  const tasks = tasksString ? JSON.parse(tasksString) : [];
+
+  cleanUpOnBack();
+
+  expect(JSON.stringify(tasks[0])).toBe(
+    JSON.stringify(updateTaskAction.payload),
+  );
+});
+
+test("Check ability to create few tasks in LocalStorage"),
+  async () => {
+    await createTaskOnBack({
+      ...updateTaskAction,
+      payload: {
+        ...updateTaskAction.payload,
+        id: "first-task",
+      },
+    });
+    await createTaskOnBack({
+      ...updateTaskAction,
+      payload: {
+        ...updateTaskAction.payload,
+        id: "second-task",
+      },
+    });
+
+    const tasksString = localStorage.getItem("tasks");
+    const tasks = tasksString ? JSON.parse(tasksString) : [];
+
+    cleanUpOnBack();
+
+    expect(tasks.length).toBe(2);
+  };
+
+test("Check ability to get task from LocalStore", async () => {
+  localStorage.setItem("tasks", JSON.stringify([updateTaskAction.payload]));
+
+  const tasks = (await getTasksOnBack()) ?? "";
+
+  expect(tasks[0]).toBeDefined;
+  cleanUpOnBack();
+});
+
+test("Check ability to delete task on LocalStorage", async () => {
+  localStorage.setItem("tasks", JSON.stringify([updateTaskAction.payload]));
+  removeTaskOnBack(removeTaskAction);
+  const tasksStr = localStorage.getItem("tasks") ?? "";
+  const tasks = JSON.parse(tasksStr);
+
+  expect(tasks.find((task: Task) => task.id === testTask.id)).toBeFalsy;
 });
