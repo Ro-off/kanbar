@@ -1,32 +1,65 @@
+import { DndContext, DragEndEvent, DragOverlay } from "@dnd-kit/core";
+import { useState } from "react";
+import { useSelector } from "react-redux";
 import { ScrollShadow } from "@heroui/scroll-shadow";
 
-import { TaskRow } from "@/components/taskRow";
-const taskList = [
-  { description: "Task 1: Complete the project documentation." },
-  { description: "Task 2: Implement the user authentication feature." },
-  { description: "Task 3: Fix the bugs reported in the last sprint." },
-  { description: "Task 4: Review the code for the new feature." },
-  { description: "Task 5: Prepare for the upcoming team meeting." },
-  { description: "Task 6: Update the project roadmap." },
-  { description: "Task 7: Conduct a performance review of the application." },
-  { description: "Task 8: Refactor the legacy codebase." },
-  { description: "Task 9: Write unit tests for the new components." },
-  { description: "Task 10: Deploy the latest version to production." },
-];
+import { ColumnIds, TaskRow } from "@/components/taskRow";
+import { updateTask } from "@/store/tasks";
+import { TaskCard } from "@/components/taskCard";
+import { Task, TasksState } from "@/types";
 
-const IndexPage = () => (
-  <div className="h-screen flex flex-col ">
-    <section className="flex flex-col items-center justify-center py-8 px-4 md:py-10">
-      <h1 className="text-3xl font-bold text-center">Kanban Board</h1>
-    </section>
-    <ScrollShadow className="max-w-screen" orientation="horizontal">
-      <section className="flex flex-row  justify-center gap-4 py-8 px-4 md:py-10 h-full w-max py-auto mx-auto">
-        <TaskRow headerColor="bg-cyan-100" taskList={taskList} title="To Do" />
-        <TaskRow headerColor="bg-yellow-100" title="In Progress" />
-        <TaskRow headerColor="bg-green-100" title="Done" />
-      </section>
-    </ScrollShadow>
-  </div>
-);
+const IndexPage = () => {
+  const [activeId, setActiveId] = useState<string | null>(null);
+  const activeDragTask = useSelector(
+    (state: TasksState) =>
+      activeId && state.tasks.find((task) => task.id === activeId),
+  ) as Task;
+
+  const handleDragStart = (event: DragEndEvent) =>
+    setActiveId(event.active.id as string);
+
+  const handleDragEnd = (event: DragEndEvent) => {
+    const { over, active } = event;
+
+    if (over && over.data.current?.sortable) {
+      updateTask(String(active.id), {
+        columnId: over.data.current.sortable.containerId,
+        index: over.data.current?.index,
+      });
+    } else if (over && over.id) {
+      updateTask(String(active.id), {
+        columnId: over.id as ColumnIds,
+      });
+    }
+  };
+
+  return (
+    <DndContext onDragEnd={handleDragEnd} onDragStart={handleDragStart}>
+      <div className="h-screen flex flex-col">
+        <section className="flex flex-col items-center justify-center py-8 px-4 md:py-10">
+          <h1 className="text-3xl font-bold text-center">Kanban Board</h1>{" "}
+        </section>
+        <ScrollShadow className="max-w-screen h-full" orientation="horizontal">
+          <section className="flex flex-row  justify-center gap-4 py-8 px-4 md:py-10 h-full w-max py-auto mx-auto">
+            <TaskRow columnId="todo" />
+            <TaskRow columnId="inProgress" />
+            <TaskRow columnId="done" />
+          </section>
+        </ScrollShadow>
+        <DragOverlay>
+          {activeDragTask && (
+            <TaskCard
+              key={activeDragTask.id}
+              columnId={activeDragTask.columnId}
+              description={activeDragTask.description}
+              id={activeDragTask.id}
+              newField={activeDragTask.newField}
+            />
+          )}
+        </DragOverlay>
+      </div>
+    </DndContext>
+  );
+};
 
 export default IndexPage;
