@@ -12,7 +12,7 @@ const taskCardTestProps: TaskCardProps = {
   index: 0,
 };
 
-it("Check taskCard snapshot", () => {
+it("it should match a snapshot of TaskCard component", () => {
   const { asFragment } = render(<TaskCard {...taskCardTestProps} />);
 
   expect(asFragment()).toMatchSnapshot();

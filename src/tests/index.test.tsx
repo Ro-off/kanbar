@@ -11,7 +11,7 @@ const taskRowTestProps: TaskRowProps = {
   columnId: "todo",
 };
 
-it("Check taskRow snapshot", () => {
+it("it should match a snapshot of the index page", () => {
   const { asFragment } = render(
     <React.StrictMode>
       <BrowserRouter>
